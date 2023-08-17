@@ -14,8 +14,16 @@ export default function Form() {
             alert('Please fill all fields')
             return
         }
-        setNextStep(true)
-        console.log(formData)
+
+        let data = []
+        if(JSON.parse(localStorage.getItem('formData'))) {
+            data= [...JSON.parse(localStorage.getItem('formData')), formData]
+        }
+
+        data.push(formData)
+        localStorage.setItem('formData', JSON.stringify(data))
+
+        window.location.href = '/view-data'
     }
 
   return (
@@ -32,9 +40,12 @@ export default function Form() {
                             Go Back
                         </Button>
           }
-          <Button type='submit'>
-              {nextStep ? 'Submit' : 'Next'}
-          </Button>
+          {!nextStep && <Button type='submit' onClick={() => setNextStep(true)}>
+              Next
+          </Button>}
+          {nextStep && <Button type='submit'>
+              Submit
+          </Button>}
         </div>
     </form>
   )
