@@ -12,22 +12,61 @@ export default function FormPart_2(props) {
   })
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const [csvData, setCSVData] = useState([]);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setSelectedFile(file);
+
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const contents = e.target.result;
         const rows = contents.split('\n');
-        const parsedData = rows.map(row => row.split(','));
-        setCSVData(parsedData);
-      };
+        const header = rows[0].split(',');
+
+        const xIndex = header.indexOf('X');
+        const yIndex = header.indexOf('Y');
+        const zIndex = header.indexOf('Z');
+
+        const parsedData = rows.slice(1).map(row => {
+          const cells = row.split(',');
+          return {
+            X: parseFloat(cells[xIndex]) || 0,
+            Y: parseFloat(cells[yIndex]) || 0,
+            Z: parseFloat(cells[zIndex]) || 0
+          };
+        });
+
+        const maxX = Math.max(...parsedData.map(row => row.X));
+        const maxY = Math.max(...parsedData.map(row => row.Y));
+        const maxZ = Math.max(...parsedData.map(row => row.Z));
+        const minX = Math.min(...parsedData.map(row => row.X));
+        const minY = Math.min(...parsedData.map(row => row.Y));
+        const minZ = Math.min(...parsedData.map(row => row.Z));
+
+        setData({
+          ...data,
+          max_x: maxX,
+          min_x: minX,
+          max_y: maxY,
+          min_y: minY,
+          max_z: maxZ,
+          min_z: minZ
+        })
+        props.onInput({
+          ...data,
+          max_x: maxX,
+          min_x: minX,
+          max_y: maxY,
+          min_y: minY,
+          max_z: maxZ,
+          min_z: minZ
+        })
+      }
       reader.readAsText(file);
     }
-  }
-  console.log(csvData)
+  };
+
   return (
     <Fragment>
       <div className='grid grid-cols-2 gap-2'>

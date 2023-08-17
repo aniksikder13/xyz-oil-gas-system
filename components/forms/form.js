@@ -5,7 +5,7 @@ import FormPart_1 from './form_part_1'
 import FormPart_2 from './form_part_2'
 
 export default function Form() {
-    const [nextStep, setNextStep]= useState(true)
+    const [nextStep, setNextStep]= useState(false)
     const [formData, setFormData] = useState({})
 
     const onFormHandler = (e) => {
@@ -15,9 +15,8 @@ export default function Form() {
             return
         }
         setNextStep(true)
-        // console.log(formData)
+        console.log(formData)
     }
-
 
   return (
     <form className='mt-5 max-w-[800px] bg-white m-auto border px-3 py-4 rounded-md' onSubmit={onFormHandler}>
