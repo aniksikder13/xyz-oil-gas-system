@@ -18,9 +18,10 @@ export default function Form() {
         let data = []
         if(JSON.parse(localStorage.getItem('formData'))) {
             data= [...JSON.parse(localStorage.getItem('formData')), formData]
+        } else {
+            data.push(formData)
         }
 
-        data.push(formData)
         localStorage.setItem('formData', JSON.stringify(data))
 
         window.location.href = '/view-data'
@@ -40,7 +41,7 @@ export default function Form() {
                             Go Back
                         </Button>
           }
-          {!nextStep && <Button type='submit' onClick={() => setNextStep(true)}>
+          {!nextStep && <Button onClick={() => setNextStep(true)}>
               Next
           </Button>}
           {nextStep && <Button type='submit'>
