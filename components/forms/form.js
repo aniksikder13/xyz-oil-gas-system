@@ -14,7 +14,6 @@ export default function Form() {
             alert('Please fill all fields')
             return
         }
-
         let data = []
         if(JSON.parse(localStorage.getItem('formData'))) {
             data= [...JSON.parse(localStorage.getItem('formData')), formData]
@@ -41,7 +40,11 @@ export default function Form() {
                             Go Back
                         </Button>
           }
-          {!nextStep && <Button onClick={() => setNextStep(true)}>
+          {!nextStep && <Button onClick={() => {
+            if(!formData.projectName || !formData.projectDescription || !formData.client || !formData.contractor) {
+             return
+            }
+            setNextStep(true)}}>
               Next
           </Button>}
           {nextStep && <Button type='submit'>
