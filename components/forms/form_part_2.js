@@ -1,5 +1,5 @@
-import React, {Fragment, useState} from 'react'
-import Input from '../ui/input'
+import { Fragment, useState } from 'react';
+import Input from '../ui/input';
 
 export default function FormPart_2(props) {
     const [data, setData] = useState({
@@ -24,6 +24,7 @@ export default function FormPart_2(props) {
         const rows = contents.split('\n');
         const header = rows[0].split(',');
 
+        const kpIndex= header.indexOf('KP');
         const xIndex = header.indexOf('X');
         const yIndex = header.indexOf('Y');
         const zIndex = header.indexOf('Z');
@@ -31,11 +32,14 @@ export default function FormPart_2(props) {
         const parsedData = rows.slice(1).map(row => {
           const cells = row.split(',');
           return {
+            KP: parseFloat(cells[kpIndex]) || 0,
             X: parseFloat(cells[xIndex]) || 0,
             Y: parseFloat(cells[yIndex]) || 0,
             Z: parseFloat(cells[zIndex]) || 0
           };
         });
+
+        console.log(parsedData);
 
         const maxX = Math.max(...parsedData.map(row => row.X));
         const maxY = Math.max(...parsedData.map(row => row.Y));
